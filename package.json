@@ -1,0 +1,24 @@
+{
+  "name": "@codewars/zulip-github-events",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/webhooks": "^7.6.4",
+    "zulip-js": "^2.0.8"
+  },
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "prettier --write"
+  }
+}
