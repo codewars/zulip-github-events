@@ -90,7 +90,7 @@ exports.zulipGitHubEvents = async (req, res) => {
   };
 
   webhooks.on("gollum", ({ payload }) => maybeSend(wikiEvent(payload)));
-  webhooks.on("issues", async ({ payload }) => maybeSend(issuesEvent(payload)));
+  webhooks.on("issues", ({ payload }) => maybeSend(issuesEvent(payload)));
   webhooks.on("issue_comment", ({ payload }) =>
     maybeSend(issueCommentEvent(payload))
   );
