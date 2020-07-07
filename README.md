@@ -24,6 +24,10 @@ We only care about the following events:
   - `created`
   - `edited`
   - `deleted`
+- `pull_request`
+  - `opened`
+  - `edited`
+  - `closed`
 
 ## Deploying
 
