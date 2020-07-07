@@ -39,7 +39,8 @@ exports.zulipGitHubEvents = async (req, res) => {
     return res.status(400).send("Missing `topic` parameter");
   }
 
-  const maybeSend = async (content) => {
+  const maybeSend = (handler) => async ({ payload }) => {
+    const content = handler(payload);
     if (!content) return;
 
     const client = await zulip(zulipConfig);
@@ -51,14 +52,10 @@ exports.zulipGitHubEvents = async (req, res) => {
     });
   };
 
-  webhooks.on("gollum", ({ payload }) => maybeSend(onGollum(payload)));
-  webhooks.on("issues", ({ payload }) => maybeSend(onIssues(payload)));
-  webhooks.on("issue_comment", ({ payload }) =>
-    maybeSend(onIssueComment(payload))
-  );
-  webhooks.on("pull_request", ({ payload }) =>
-    maybeSend(onPullRequest(payload))
-  );
+  webhooks.on("gollum", maybeSend(onGollum));
+  webhooks.on("issues", maybeSend(onIssues));
+  webhooks.on("issue_comment", maybeSend(onIssueComment));
+  webhooks.on("pull_request", maybeSend(onPullRequest));
   await webhooks.receive({
     id: req.get("x-github-delivery"),
     name: req.get("x-github-event"),
