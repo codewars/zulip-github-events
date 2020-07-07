@@ -1,14 +1,17 @@
+const genUserLink = ({ login, html_url }) => `[${login}](${html_url})`;
+const genIssueLink = ({ number, title, html_url }) =>
+  `[Issue #${number} ${title}](${html_url})`;
+
 const onGollum = ({ sender, pages }) => {
   return [
-    `[${sender.login}](${sender.html_url}):`,
+    `${genUserLink(sender)}:`,
     ...pages.map((p) => `* ${p.action} [${p.title}](${p.html_url})`),
   ].join("\n");
 };
 
 const onIssues = ({ action, sender, issue, label }) => {
-  const user = `[${sender.login}](${sender.html_url})`;
-  const title = `Issue #${issue.number} ${issue.title}`;
-  const issueLink = `[${title}](${issue.html_url})`;
+  const user = genUserLink(sender);
+  const issueLink = genIssueLink(issue);
 
   switch (action) {
     case "opened":
@@ -26,9 +29,8 @@ const onIssues = ({ action, sender, issue, label }) => {
 };
 
 const onIssueComment = ({ action, sender, comment, issue }) => {
-  const user = `[${sender.login}](${sender.html_url})`;
-  const issueTitle = `Issue #${issue.number} ${issue.title}`;
-  const issueLink = `[${issueTitle}](${issue.html_url})`;
+  const user = genUserLink(sender);
+  const issueLink = genIssueLink(issue);
 
   switch (action) {
     case "created":
