@@ -44,8 +44,25 @@ const onIssueComment = ({ action, sender, comment, issue }) => {
   }
 };
 
+const onPullRequest = ({ action, pull_request, sender }) => {
+  const user = genUserLink(sender);
+  const prLink = genIssueLink(pull_request);
+
+  if (action === "closed" && pull_request.merged) action = "merged";
+  switch (action) {
+    case "opened":
+    case "edited":
+    case "closed":
+    case "merged":
+      return `${user} ${action} ${prLink}`;
+    default:
+      return "";
+  }
+};
+
 module.exports = {
   onGollum,
   onIssues,
   onIssueComment,
+  onPullRequest,
 };

@@ -7,7 +7,12 @@ const ZULIP_REALM = process.env.ZULIP_REALM;
 
 const zulip = require("zulip-js");
 const { Webhooks } = require("@octokit/webhooks");
-const { onGollum, onIssues, onIssueComment } = require("./messages");
+const {
+  onGollum,
+  onIssues,
+  onIssueComment,
+  onPullRequest,
+} = require("./messages");
 
 const zulipConfig = {
   username: ZULIP_BOT_EMAIL,
@@ -50,6 +55,9 @@ exports.zulipGitHubEvents = async (req, res) => {
   webhooks.on("issues", ({ payload }) => maybeSend(onIssues(payload)));
   webhooks.on("issue_comment", ({ payload }) =>
     maybeSend(onIssueComment(payload))
+  );
+  webhooks.on("pull_request", ({ payload }) =>
+    maybeSend(onPullRequest(payload))
   );
   await webhooks.receive({
     id: req.get("x-github-delivery"),
