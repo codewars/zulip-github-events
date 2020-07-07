@@ -1,6 +1,8 @@
 const genUserLink = ({ login, html_url }) => `[${login}](${html_url})`;
-const genIssueLink = ({ number, title, html_url }) =>
-  `[Issue #${number} ${title}](${html_url})`;
+const genLinkWithPrefix = (prefix) => ({ number, title, html_url }) =>
+  `[${prefix} #${number} ${title}](${html_url})`;
+const genIssueLink = genLinkWithPrefix("Issue");
+const genPRLink = genLinkWithPrefix("PR");
 
 const onGollum = ({ sender, pages }) => {
   return [
@@ -46,7 +48,7 @@ const onIssueComment = ({ action, sender, comment, issue }) => {
 
 const onPullRequest = ({ action, pull_request, sender }) => {
   const user = genUserLink(sender);
-  const prLink = genIssueLink(pull_request);
+  const prLink = genPRLink(pull_request);
 
   if (action === "closed" && pull_request.merged) action = "merged";
   switch (action) {
