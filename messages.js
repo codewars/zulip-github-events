@@ -62,9 +62,30 @@ const onPullRequest = ({ action, pull_request, sender }) => {
   }
 };
 
+const onPullRequestReviewComment = ({
+  action,
+  comment,
+  pull_request,
+  sender,
+}) => {
+  const user = genUserLink(sender);
+  const prLink = genPRLink(pull_request);
+
+  switch (action) {
+    case "created":
+      return `${user} review [commented](${comment.html_url}) on ${prLink}`;
+
+    case "edited":
+    case "deleted":
+    default:
+      return "";
+  }
+};
+
 module.exports = {
   onGollum,
   onIssues,
   onIssueComment,
   onPullRequest,
+  onPullRequestReviewComment,
 };
