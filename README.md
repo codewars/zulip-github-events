@@ -28,6 +28,8 @@ We only care about the following events:
   - `opened`
   - `edited`
   - `closed`
+- `pull_request_review`
+  - `submitted`
 - `pull_request_review_comment`
   - `created`
 

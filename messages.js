@@ -62,6 +62,21 @@ const onPullRequest = ({ action, pull_request, sender }) => {
   }
 };
 
+const onPullRequestReview = ({ action, pull_request, sender }) => {
+  const user = genUserLink(sender);
+  const prLink = genPRLink(pull_request);
+
+  switch (action) {
+    case "submitted":
+      return `${user} reviewed ${prLink}`;
+
+    case "edited":
+    case "dismissed":
+    default:
+      return "";
+  }
+};
+
 const onPullRequestReviewComment = ({
   action,
   comment,
@@ -87,5 +102,6 @@ module.exports = {
   onIssues,
   onIssueComment,
   onPullRequest,
+  onPullRequestReview,
   onPullRequestReviewComment,
 };

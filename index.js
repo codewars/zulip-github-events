@@ -12,6 +12,7 @@ const {
   onIssues,
   onIssueComment,
   onPullRequest,
+  onPullRequestReview,
   onPullRequestReviewComment,
 } = require("./messages");
 
@@ -57,6 +58,7 @@ exports.zulipGitHubEvents = async (req, res) => {
   webhooks.on("issues", maybeSend(onIssues));
   webhooks.on("issue_comment", maybeSend(onIssueComment));
   webhooks.on("pull_request", maybeSend(onPullRequest));
+  webhooks.on("pull_request_review", maybeSend(onPullRequestReview));
   webhooks.on(
     "pull_request_review_comment",
     maybeSend(onPullRequestReviewComment)
